@@ -67,6 +67,8 @@
 
 	Updates:
 	- UPDATED: Updated Parse() to pass []string variable instead of parsing from os.Args
+	- Updated: Updated Parse(arr_args []string) to handle error message and return an error instead of panic
+	- Updated: Updated "var CommandLine" to "ContinueOnError" instead of "ExitOnError"
 */
 package customflags
 
@@ -1032,12 +1034,17 @@ func (f *FlagSet) Parsed() bool {
 	return f.parsed
 }
 
-// UPDATED: Updated to pass variable into Parse()
+// UPDATED: Updated to pass variable into Parse() and handle error
 // Parse parses the command-line flags from passed in []string. Must be called
 // after all flags are defined and before flags are accessed by the program.
-func Parse(arr_args []string) {
+func Parse(arr_args []string) error {
 	// Ignore errors; CommandLine is set for ExitOnError. // TODO: Update ExitOnError
-	CommandLine.Parse(arr_args)
+	err := CommandLine.Parse(arr_args)
+	if err != nil {
+		return err
+	} else {
+		return nil
+	}
 }
 
 // Parsed reports whether the command-line flags have been parsed.
@@ -1048,7 +1055,7 @@ func Parsed() bool {
 // CommandLine is the default set of command-line flags, parsed from os.Args.
 // The top-level functions such as BoolVar, Arg, and so on are wrappers for the
 // methods of CommandLine.
-var CommandLine = NewFlagSet(os.Args[0], ExitOnError) // TODO: Update NewFlagSet here
+var CommandLine = NewFlagSet(os.Args[0], ContinueOnError) // TODO: Update NewFlagSet here
 
 func init() {
 	// Override generic FlagSet default Usage with call to global Usage.

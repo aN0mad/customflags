@@ -2,7 +2,9 @@
 Package customflags implements a modified version of the golang command-line flag parsing.
 
 ## Changes
-UPDATED: Updated Parse() to pass []string variable instead of parsing from os.Args
+Updated: Updated Parse() to pass []string variable instead of parsing from os.Args
+Updated: Updated Parse(arr_args []string) to handle error message and return an error instead of panic
+Updated: Updated "var CommandLine" to "ContinueOnError" instead of "ExitOnError"
 
 ## Examples
 
