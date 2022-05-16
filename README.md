@@ -16,21 +16,32 @@ Package customflags implements a modified version of the golang command-line fla
 
 Parsing flag Int
 ```
-// Argument slice
-args := []string{"-n", "5"} 
+package main
 
-// Create our FlagSet
-fs := customflags.NewCommandLine()
+import (
+	"fmt"
 
-// Create the flags we want in this FlagSet
-nFlag := fs.Int("n", 0, "Number passed in")
+	"github.com/theRealFr13nd/customflags"
+)
 
-// Parse the arg slice into the flags we defined
-err := fs.Parse(args)
-if err != nil {
-	panic(err)
+func main() {
+	// Argument slice
+	args := []string{"-n", "5"}
+
+	// Create our FlagSet
+	fs := customflags.NewCommandLine()
+
+	// Create the flags we want in this FlagSet
+	nFlag := fs.Int("n", 0, "Number passed in")
+
+	// Parse the arg slice into the flags we defined
+	err := fs.Parse(args)
+	if err != nil {
+		panic(err)
+	}
+
+	// Use the parsed flags
+	fmt.Printf("nFlag: %d\n", *nFlag)
 }
 
-// Use the parsed flags
-fmt.Printf("nFlag: %d\n", *nFlag)
 ```
