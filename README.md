@@ -11,9 +11,6 @@ Package customflags implements a modified version of the golang command-line fla
 ## Notes:
 - Package was modified to allow flag parsing multiple times in the program with the same flag definitions.
 - Each function that needs to parse flags can use the code snippet below to create a unique FlagSet for that function
-		```
-		
-		```
 
 ## Examples
 
