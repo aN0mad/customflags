@@ -69,6 +69,22 @@
 	- UPDATED: Updated Parse() to pass []string variable instead of parsing from os.Args
 	- Updated: Updated Parse(arr_args []string) to handle error message and return an error instead of panic
 	- Updated: Updated "var CommandLine" to "ContinueOnError" instead of "ExitOnError"
+	- Updated: Added function NewCommandLine() which creates a NewFlagSet() and returns a pointer to FlagSet
+	- Added fsParsed() function
+
+	Notes:
+	- Package was modified to allow flag parsing multiple times in the program with the same flag definitions.
+	- Each function that needs to parse flags can use the code snippet below to create a unique FlagSet for that function
+		```
+		fs := customflags.NewCommandLine()
+		flag_SRC := fs.String("src", "", "Where to download the file from")
+		flag_DEST := fs.String("dest", "", "Where to put the file after downloading")
+		err := fs.Parse(args)
+		if err != nil {
+			panic(err)
+		}
+		```
+
 */
 package customflags
 
@@ -1052,10 +1068,20 @@ func Parsed() bool {
 	return CommandLine.Parsed()
 }
 
+// Parsed reports whether the command-line flags have been parsed.
+func (fs *FlagSet) fsParsed() bool {
+	return fs.Parsed()
+}
+
 // CommandLine is the default set of command-line flags, parsed from os.Args.
 // The top-level functions such as BoolVar, Arg, and so on are wrappers for the
 // methods of CommandLine.
 var CommandLine = NewFlagSet(os.Args[0], ContinueOnError) // TODO: Update NewFlagSet here
+
+func NewCommandLine() *FlagSet {
+	fs := NewFlagSet(os.Args[0], ContinueOnError)
+	return fs
+}
 
 func init() {
 	// Override generic FlagSet default Usage with call to global Usage.
